@@ -444,6 +444,8 @@ class Rec:
             res = cp.zeros(1, dtype="float32")
         
         @gpu_batch(self.nchunk, self.ngpus, axis_out=0, axis_inp=0)
+        
+        
         def _hessian_F(self, res, big_psi, dbig_psi1, dbig_psi2, d):
             l0 = big_psi / (cp.abs(big_psi) + self.eps)
             d0 = d / (cp.abs(big_psi) + self.eps)
@@ -451,6 +453,9 @@ class Rec:
             v2 = cp.sum(d0 * reprod(l0, dbig_psi1) * reprod(l0, dbig_psi2))
             res[:] = 2 * (v1 + v2)
             return res
+
+
+            
         _hessian_F(self, res, big_psi, dbig_psi1, dbig_psi2, d)
         if flg:
             for k in range(1,len(res)):
